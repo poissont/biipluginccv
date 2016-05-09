@@ -146,7 +146,10 @@ add_action('wp_enqueue_scripts', "biipreloader_enqueueJS");
 
 add_action("bii_informations", function() {
 	?>
-	<tr><td>Le preloader est  </td><td><?= bii_makebutton("bii_usepreloader"); ?></td></tr>
+	<tbody id="bii_preloader">
+		<tr><th colspan="2">Bii_preloader</th>
+		<tr><td>Le preloader est  </td><td><?= bii_makebutton("bii_usepreloader"); ?></td></tr>
+	</tbody>
 	<?php
 });
 if (get_option("bii_usepreloader")) {

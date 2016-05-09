@@ -12,13 +12,13 @@ define('bii_css_path', plugin_dir_path(__FILE__));
 define('bii_css_url', plugin_dir_url(__FILE__));
 
 add_action('admin_enqueue_scripts', function () {
-	if (isset($_GET["page"]) && (strpos($_GET["page"], "bii") !== false) || (strpos($_GET["page"], "_list") !== false) || (strpos($_GET["page"], "_edit") !== false)) {
+	if (isset($_GET["page"]) && (strpos($_GET["page"], "bii") !== false) || (strpos($_GET["page"], "_list") !== false) || (strpos($_GET["page"], "_edit") !== false) || (strpos($_GET["page"], "_edit") !== false)) {
 		if (get_option("bii_usebootstrap_admin")) {
 			wp_enqueue_style('bootstrap', plugins_url('css/bootstrap.css', __FILE__));
 		}
-		if (get_option("bii_usebootstrap_admin_js")) {
-			wp_enqueue_script('bootstrapjs', plugins_url('js/bootstrap.min.js', __FILE__), array('jquery'), false, true);
-		}
+//		if (get_option("bii_usebootstrap_admin_js")) {
+//			wp_enqueue_script('bootstrapjs', plugins_url('js/bootstrap.min.js', __FILE__), array('jquery'), false, true);
+//		}
 		if (get_option("bii_fa_admin")) {
 			wp_enqueue_style('font-awesome', plugins_url('css/font-awesome.min.css', __FILE__));
 		}
@@ -42,12 +42,16 @@ add_action('wp_enqueue_scripts', function() {
 
 add_action("bii_informations", function() {
 	?>
-	<tr><td>Le menu à gauche est </td><td><?= bii_makebutton("bii_useleftmenu"); ?></td></tr>
-	<tr><td>Bootstrap Admin est  </td><td><?= bii_makebutton("bii_usebootstrap_admin"); ?></td></tr>
-	<tr><td>Bootstrap Admin JS est  </td><td><?= bii_makebutton("bii_usebootstrap_admin_js"); ?></td></tr>
-	<tr><td>Font Awesome Admin est  </td><td><?= bii_makebutton("bii_fa_admin"); ?></td></tr>
-	<tr><td>Bootstrap Front est  </td><td><?= bii_makebutton("bii_usebootstrap_front"); ?></td></tr>
-	<tr><td>Font Awesome Front est  </td><td><?= bii_makebutton("bii_fa_front"); ?></td></tr>
+
+	<tbody id="bii_css">
+		<tr><th colspan="2">Bii_CSS</th>
+		<tr><td>Le menu à gauche est </td><td><?= bii_makebutton("bii_useleftmenu"); ?></td></tr>
+		<tr><td>Bootstrap Admin est  </td><td><?= bii_makebutton("bii_usebootstrap_admin"); ?></td></tr>
+		<!--<tr><td>Bootstrap Admin JS est  </td><td><?php // bii_makebutton("bii_usebootstrap_admin_js");   ?></td></tr>-->
+		<tr><td>Font Awesome Admin est  </td><td><?= bii_makebutton("bii_fa_admin"); ?></td></tr>
+		<tr><td>Bootstrap Front est  </td><td><?= bii_makebutton("bii_usebootstrap_front"); ?></td></tr>
+		<tr><td>Font Awesome Front est  </td><td><?= bii_makebutton("bii_fa_front"); ?></td></tr>
+	</tbody>
 	<?php
 });
 

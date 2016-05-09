@@ -95,7 +95,9 @@ add_action("bii_options", function() {
 	?>
 	<div class="col-xxs-12 pl-Informations bii_option">
 		<table>
-			<?php do_action("bii_informations"); ?>				
+			
+			<?php do_action("bii_informations"); ?>			
+			
 		</table>
 	</div>
 	<div class="col-xxs-12 pl-Biidebug bii_option hidden">

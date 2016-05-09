@@ -11,8 +11,11 @@ define('bii_bdd_version', '1.0');
 
 add_action("bii_informations", function() {
 	?>
-	<tr><td>La base de données des communes est  </td><td><?= bii_makebutton("bii_use_bddcommunes", 0, 1); ?></td></tr>
-	<tr><td>La base de données spécifique au plugin est  </td><td><?= bii_makebutton("bii_use_bddplugin", 0, 1); ?></td></tr>
+	<tbody id="bii_bdd">
+		<tr><th colspan="2">Bii_BDD</th>
+		<tr><td>La base de données des communes est  </td><td><?= bii_makebutton("bii_use_bddcommunes", 0, 1); ?></td></tr>
+		<tr><td>La base de données spécifique au plugin est  </td><td><?= bii_makebutton("bii_use_bddplugin", 0, 1); ?></td></tr>
+	</tbody>
 	<?php
 });
 add_action("bii_options_submit", function() {

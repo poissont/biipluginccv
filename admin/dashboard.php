@@ -20,8 +20,9 @@
 						<div class="col-xxs-12 pl-zdt bii_option hidden">
 							<h2 class="faa-parent animated-hover"><i class="fa fa-cogs faa-ring"></i> Zone de test</h2>
 							<?php
-							
+//							pre($_POST);
 							bii_MB_restrict_user(4135);
+//							pre(get_post_meta(4135));
 							?>
 						</div>
 					<?php } ?>
