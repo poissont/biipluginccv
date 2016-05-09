@@ -2,14 +2,12 @@
 /*
   Plugin Name: Bii restricted content
   Description: Permet de restreindre l'affichage d'une page à une certaine liste d'utilisateurs
-  Version: 1.0
+  Version: 1.1
   Author: Biilink Agency
   Author URI: http://biilink.com/
   License: GPL2
  */
-define('bii_restricted_content_version', '1.0');
-
-
+define('bii_restricted_content_version', '1.1');
 
 add_action('save_post', 'bii_RC_save_metaboxes');
 
@@ -107,7 +105,8 @@ function bii_restrict_post($content) {
 		}
 	}
 	if ($restricted) {
-		$content = "<p>Ce contenu n'est accessible qu'à certains utilisateurs, veuillez vous connecter via le formulaire ci dessous </p>" . wp_login_form(["echo" => false]);
+		$content = apply_filters("bii_rc_text",wp_login_form(["echo" => false]));
+//		$content = "<p>Ce contenu n'est accessible qu'à certains utilisateurs, veuillez vous connecter via le formulaire ci dessous </p>" . wp_login_form(["echo" => false]);
 		return $content;
 	} else {
 		return $content;
@@ -115,3 +114,42 @@ function bii_restrict_post($content) {
 }
 
 add_filter('the_content', 'bii_restrict_post');
+
+function bii_rc_text($content){
+	if(!get_option("bii_rc_text_before")){
+		update_option("bii_rc_text_before", "<p>Ce contenu n'est accessible qu'à certains utilisateurs, veuillez vous connecter via le formulaire ci dessous </p>");
+	}
+	if(!get_option("bii_rc_text_after")){
+		update_option("bii_rc_text_after", "<p></p>");
+	}
+	return get_option("bii_rc_text_before").$content.get_option("bii_rc_text_after");
+}
+
+add_filter('bii_rc_text',"bii_rc_text");
+
+if (get_option("bii_userestrict_content")) {
+	add_action("bii_options_title", function() {
+		?>
+		<li role="presentation" class="hide-relative" data-relative="pl-userestrict"><i class="fa fa-eye-slash"></i> Contenu caché</li>
+		<?php
+	});
+	add_action("bii_options", function() {
+		?>
+		<div class="hidden col-xxs-12 pl-userestrict bii_option">
+			<?php
+			bii_makestuffbox("bii_rc_text_before", "Message avant le formulaire", "textarea");
+			bii_makestuffbox("bii_rc_text_after", "Message après le formulaire", "textarea");
+			?>
+		</div>
+		<?php
+	});
+}
+
+add_action("bii_options_submit", function() {
+	$tableaucheck = ["bii_rc_text_before","bii_rc_text_after"];
+	foreach ($tableaucheck as $itemtocheck) {
+		if (isset($_POST[$itemtocheck])) {
+			update_option($itemtocheck, $_POST[$itemtocheck]);
+		}
+	}
+}, 5);
