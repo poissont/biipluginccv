@@ -2,12 +2,12 @@
 /*
   Plugin Name: Bii restricted content
   Description: Permet de restreindre l'affichage d'une page à une certaine liste d'utilisateurs
-  Version: 1.1
+  Version: 1.2
   Author: Biilink Agency
   Author URI: http://biilink.com/
   License: GPL2
  */
-define('bii_restricted_content_version', '1.1');
+define('bii_restricted_content_version', '1.2');
 
 add_action('save_post', 'bii_RC_save_metaboxes');
 
@@ -31,7 +31,7 @@ function bii_MB_restrict_user($post) {
 		bii_write_log(plugins_url('js/jquery.multi-select.js', __FILE__));
 		wp_enqueue_style('lou-multiselect-css', plugins_url('css/multi-select.css', __FILE__));
 		wp_enqueue_script('lou-multiselect', plugins_url('js/jquery.multi-select.js', __FILE__), array('jquery'), false, true);
-		
+
 		$userc = get_post_meta($post->ID, 'bii_userestrict_content', true);
 		$user_allowed = unserialize(get_post_meta($post->ID, 'bii_users_allowed', true));
 		if (!$userc) {
@@ -44,7 +44,6 @@ function bii_MB_restrict_user($post) {
 		$hidden = "hidden";
 		if ($userc == 1) {
 			$checked = "checked='checked'";
-			
 		}
 		?>
 		<style>
@@ -60,7 +59,7 @@ function bii_MB_restrict_user($post) {
 				<?= users::genOptionForm("", $user_allowed); ?>
 			</select>
 		</div>
-		
+
 		<?php
 	}
 }
@@ -81,31 +80,34 @@ add_action("bii_informations", function() {
 });
 
 function bii_restrict_post($content) {
-//	bii_write_log($content);
-	$id_post = 0;
 	$restricted = false;
-	if (isset($GLOBALS['post']->ID)) {
-		$id_post = $GLOBALS['post']->ID;
-		$metas = get_post_meta($id_post);
-//		bii_write_log($metas);
-		if (isset($metas["bii_userestrict_content"]) && $metas["bii_userestrict_content"][0] == 1) {
-			rocket_clean_post($id_post);
-			$restricted = true;
-			bii_write_log($metas["bii_users_allowed"][0]);
-			if (isset($metas["bii_users_allowed"])) {
-				$ua = unserialize(get_post_meta($id_post, 'bii_users_allowed', true));
-				bii_write_log('$ua');
-				bii_write_log($ua);
-				$user_id = get_current_user_id();
+	if (get_option("bii_userestrict_content")) {
+//	bii_write_log($content);
+		$id_post = 0;
 
-				if (in_array($user_id, $ua)) {
-					$restricted = false;
+		if (isset($GLOBALS['post']->ID)) {
+			$id_post = $GLOBALS['post']->ID;
+			$metas = get_post_meta($id_post);
+//		bii_write_log($metas);
+			if (isset($metas["bii_userestrict_content"]) && $metas["bii_userestrict_content"][0] == 1) {
+				rocket_clean_post($id_post);
+				$restricted = true;
+				bii_write_log($metas["bii_users_allowed"][0]);
+				if (isset($metas["bii_users_allowed"])) {
+					$ua = unserialize(get_post_meta($id_post, 'bii_users_allowed', true));
+					bii_write_log('$ua');
+					bii_write_log($ua);
+					$user_id = get_current_user_id();
+
+					if (in_array($user_id, $ua)) {
+						$restricted = false;
+					}
 				}
 			}
 		}
 	}
 	if ($restricted) {
-		$content = apply_filters("bii_rc_text",wp_login_form(["echo" => false]));
+		$content = apply_filters("bii_rc_text", wp_login_form(["echo" => false]));
 //		$content = "<p>Ce contenu n'est accessible qu'à certains utilisateurs, veuillez vous connecter via le formulaire ci dessous </p>" . wp_login_form(["echo" => false]);
 		return $content;
 	} else {
@@ -115,17 +117,17 @@ function bii_restrict_post($content) {
 
 add_filter('the_content', 'bii_restrict_post');
 
-function bii_rc_text($content){
-	if(!get_option("bii_rc_text_before")){
+function bii_rc_text($content) {
+	if (!get_option("bii_rc_text_before")) {
 		update_option("bii_rc_text_before", "<p>Ce contenu n'est accessible qu'à certains utilisateurs, veuillez vous connecter via le formulaire ci dessous </p>");
 	}
-	if(!get_option("bii_rc_text_after")){
+	if (!get_option("bii_rc_text_after")) {
 		update_option("bii_rc_text_after", "<p></p>");
 	}
-	return get_option("bii_rc_text_before").$content.get_option("bii_rc_text_after");
+	return get_option("bii_rc_text_before") . $content . get_option("bii_rc_text_after");
 }
 
-add_filter('bii_rc_text',"bii_rc_text");
+add_filter('bii_rc_text', "bii_rc_text");
 
 if (get_option("bii_userestrict_content")) {
 	add_action("bii_options_title", function() {
@@ -146,7 +148,7 @@ if (get_option("bii_userestrict_content")) {
 }
 
 add_action("bii_options_submit", function() {
-	$tableaucheck = ["bii_rc_text_before","bii_rc_text_after"];
+	$tableaucheck = ["bii_rc_text_before", "bii_rc_text_after"];
 	foreach ($tableaucheck as $itemtocheck) {
 		if (isset($_POST[$itemtocheck])) {
 			update_option($itemtocheck, $_POST[$itemtocheck]);
