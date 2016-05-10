@@ -3,11 +3,11 @@
 /*
   Plugin Name: Bii_plugin
   Description: Bii_plugin - Bii_plugin
-  Version: 0.1
+  Version: 1.0
   Author: BiilinkAgency
  */
 
-define('Bii_plugin_version', '0.1');
+define('Bii_plugin_version', '1.0');
 define('Bii_path', plugin_dir_path(__FILE__));
 
 define('Bii_plugin_slug',"Biilinkplugin");

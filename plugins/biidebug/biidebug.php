@@ -2,16 +2,28 @@
 /*
   Plugin Name: BiiDebug
   Description: Ajoute des fonctions de débug, invisibles pour le public
-  Version: 2.0.3
+  Version: 2.1.0
   Author: Biilink Agency
   Author URI: http://biilink.com/
   License: GPL2
  */
-define('bii_debug_version', '2.0.3');
+define('bii_debug_version', '2.1.0');
 
 define('BiiDebug_path', plugin_dir_path(__FILE__));
 
-require_once(BiiDebug_path."/functions.php");
+require_once(BiiDebug_path . "/functions.php");
+
+function _remove_script_version($src) {
+	if (get_option("bii_disallow_querystrings")) {
+		$parts = explode('?', $src);
+		return $parts[0];
+	} else {
+		return $src;
+	}
+}
+
+add_filter('script_loader_src', '_remove_script_version', 15, 1);
+add_filter('style_loader_src', '_remove_script_version', 15, 1);
 
 function biidebug_enqueueJS() {
 	wp_enqueue_script('util', plugins_url('js/util.js', __FILE__), array('jquery'), false, true);
@@ -68,6 +80,7 @@ add_action('admin_head', 'bii_showlogs');
 add_action("bii_informations", function() {
 	?>
 	<tr><td>Les emojis sont  </td><td><?= bii_makebutton("bii_disallow_emojis", 1, 0, true); ?></td></tr>
+	<tr><td>Les query string des ressources sont  </td><td><?= bii_makebutton("bii_disallow_querystrings", 1, 1, true); ?></td></tr>
 	<?php
 });
 
@@ -95,9 +108,9 @@ add_action("bii_options", function() {
 	?>
 	<div class="col-xxs-12 pl-Informations bii_option">
 		<table>
-			
+
 			<?php do_action("bii_informations"); ?>			
-			
+
 		</table>
 	</div>
 	<div class="col-xxs-12 pl-Biidebug bii_option hidden">
