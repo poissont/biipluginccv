@@ -3,16 +3,12 @@
 function bii_listeClass() {
 	$list = [
 		"rpdo",
-		
 		"global_class",
-
 		"posts",
 		"terms",
-		
 		"postmeta",
 		"users",
 		"usermeta",
-		
 	];
 	return $list;
 }
@@ -40,9 +36,17 @@ function bii_dashboard() {
 	include('admin/dashboard.php');
 }
 
-function bii_dashboard_title($param,$param2){
-	return "<h1 class='faa-parent animated-hover'><span class='fa fa-rocket faa-passing'></span> Plugin Bii_Plugin version ".Bii_plugin_version." </h1>";
+function bii_dashboard_title($param, $param2) {
+	return "<h1 class='faa-parent animated-hover'><span class='fa fa-rocket faa-passing'></span> Plugin Bii_Plugin version " . Bii_plugin_version . " </h1>";
 }
-add_filter('bii_dashboard_title', 'bii_dashboard_title',1,2);
+
+add_filter('bii_dashboard_title', 'bii_dashboard_title', 1, 2);
+
+function bii_action_links($links) {
+	$links[] = '<a href="' . esc_url(get_admin_url(null, 'admin.php?page=bii_plugin')) . '">Paramètres</a>';
+	return $links;
+}
+
+add_filter('plugin_action_links_' . plugin_basename(Bii_file), 'bii_action_links');
 //ADD YOUR FILTERS AND ACTIONS
 
