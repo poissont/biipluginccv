@@ -3,11 +3,11 @@
 /*
   Plugin Name: Bii_plugin
   Description: Bii_plugin : Plugin de développement de biilink. Ce plugin ajoute des fonctions de débug en cours de développement, de gestion de l'interface d'admin, de débug SEO et des fonctionnalités front office
-  Version: 1.0.1
+  Version: 1.0.2
   Author: BiilinkAgency
  */
 
-define('Bii_plugin_version', '1.0.1');
+define('Bii_plugin_version', '1.0.2');
 define('Bii_path', plugin_dir_path(__FILE__));
 define('Bii_file', __FILE__);
 

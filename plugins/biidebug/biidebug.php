@@ -13,7 +13,7 @@ define('BiiDebug_path', plugin_dir_path(__FILE__));
 
 require_once(BiiDebug_path . "/functions.php");
 
-function _remove_script_version($src) {
+function bii_remove_script_version($src) {
 	if (get_option("bii_disallow_querystrings")) {
 		$parts = explode('?', $src);
 		return $parts[0];
@@ -22,8 +22,8 @@ function _remove_script_version($src) {
 	}
 }
 
-add_filter('script_loader_src', '_remove_script_version', 15, 1);
-add_filter('style_loader_src', '_remove_script_version', 15, 1);
+add_filter('script_loader_src', 'bii_remove_script_version', 15, 1);
+add_filter('style_loader_src', 'bii_remove_script_version', 15, 1);
 
 function biidebug_enqueueJS() {
 	wp_enqueue_script('util', plugins_url('js/util.js', __FILE__), array('jquery'), false, true);

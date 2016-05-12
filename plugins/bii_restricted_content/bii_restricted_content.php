@@ -124,7 +124,7 @@ function bii_rc_text($content) {
 	if (!get_option("bii_rc_text_after")) {
 		update_option("bii_rc_text_after", "<p></p>");
 	}
-	return get_option("bii_rc_text_before") . $content . get_option("bii_rc_text_after");
+	return stripcslashes(get_option("bii_rc_text_before")) . $content . stripcslashes(get_option("bii_rc_text_after"));
 }
 
 add_filter('bii_rc_text', "bii_rc_text");
